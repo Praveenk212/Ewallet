@@ -7,10 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,15 +25,11 @@ class EwalletApplicationTests {
 
 	@Test
 	void contextLoads() {
+		
 	}
 	@Autowired
 	EwalletValidation validation;
-//	@Before
-//	public void Start()
-//	{
-//		validation=new EwalletValidation();
-//	}
-	
+
 	@Autowired
 	private AccountService accService;
 
@@ -59,20 +52,10 @@ class EwalletApplicationTests {
 		Customer custTwo = new Customer(7876543212l, "Alex@123", "kolenchiski", 19,"Male", "alexk@yahoo.com");
 		list.add(custOne);
 		list.add(custTwo);
-//		when(custDao.saveAll(list)).thenReturn(Stream
-//				.of(new Customer(7876543212l, "John@123", "John", 19,"Male","howtodoinjava@gmail.com"), 
-//					new Customer(7876543212l, "John@123", "John", 19,"Male","howtodoinjava@gmail.com"))
-//				.collect(Collectors.toList()));
 		
 		when(custDao.findAll()).thenReturn(list);
 		
 	    assertEquals(2, accService.getAllUser().size());
-	}
-	
-	@Test
-	public void getUserByMobileNumber()
-	{
-		
 	}
 	
 	

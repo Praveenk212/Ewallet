@@ -6,6 +6,6 @@ import com.cg.ewallet.dto.Account;
 
 
 
-public interface AccountDao extends JpaRepository<Account,String> {
+public interface AccountDao extends JpaRepository<Account,Integer> {
 	
 }

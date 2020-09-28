@@ -1,23 +1,13 @@
-package com.cg.ewallet.exception;
-
-import java.util.Date;
+package com.cg.ewallet.dto;
 
 public class CustomErrorDetails {
 	
-	private Date timeStamp;
 	private String message;
 	private String errorDetails;
-	public CustomErrorDetails(Date timeStamp, String message, String errorDetails) {
+	public CustomErrorDetails(String errorDetails, String message ) {
 		super();
-		this.timeStamp = timeStamp;
 		this.message = message;
 		this.errorDetails = errorDetails;
-	}
-	public Date getTimeStamp() {
-		return timeStamp;
-	}
-	public void setTimeStamp(Date timeStamp) {
-		this.timeStamp = timeStamp;
 	}
 	public String getMessage() {
 		return message;

@@ -28,13 +28,13 @@ public class EwalletValidation
 	public boolean checkUserName(String userName)
 	{
 		String regex ="(^[a-z]{1}[a-z0-9_-]{2,15}$)";
-//		String regex="((?=.*\\\\d)(?=.*[a-z])).{3,20})";
+
 		return userName.matches(regex);
 	}
 	
 	public boolean checkPassword(String password)
 	{
-//		String regex="((?=.*[a-z])(?=.*d)(?=.*[@#$%])(?=.*[A-Z]).{6,16})";
+
 		String regex="((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
 		return password.matches(regex);
 	}
@@ -56,14 +56,9 @@ public class EwalletValidation
 			}
 		}
 		int age=Integer.parseInt(custAge);
-			if(age>1 && age<=120)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+		
+		return (age>1 && age<=120)?true:false; 
+	
 	}	
 	public boolean checkCustomerGender(String gender)
 	{

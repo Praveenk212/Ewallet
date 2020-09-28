@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.cg.ewallet.dto.Customer;
 
 
-public interface CustomerDao extends JpaRepository<Customer,String> {
+public interface CustomerDao extends JpaRepository<Customer,Integer> {
 
 	
 }

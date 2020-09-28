@@ -2,7 +2,6 @@ package com.cg.ewallet.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +10,7 @@ import com.cg.ewallet.dao.AccountDao;
 import com.cg.ewallet.dao.CustomerDao;
 import com.cg.ewallet.dto.Account;
 import com.cg.ewallet.dto.Customer;
+import com.cg.ewallet.exception.NoPendingAccount;
 import com.cg.ewallet.exception.UserExistsException;
 import com.cg.ewallet.exception.UserNotFoundException;
 import com.cg.ewallet.validation.EwalletValidation;
@@ -86,9 +86,9 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public List<Customer> getAccountsToApprove() {
+	public List<Customer> getAccountsToApprove() throws NoPendingAccount{
 		
-		List<Customer> pendingAccounts = new ArrayList<Customer>();
+		List<Customer> pendingAccounts= new ArrayList<Customer>();
 		List<Customer> accounts = custDao.findAll();
 		for(Customer acc:accounts) {
 			if((acc.getAccountStatus().equalsIgnoreCase("pending")))
@@ -96,15 +96,22 @@ public class AccountServiceImpl implements AccountService {
 				pendingAccounts.add(acc);
 			}
 		}
+		if(pendingAccounts.size()==0)
+		{
+			throw new NoPendingAccount("No pending Account");
+		}
+		else
 		return pendingAccounts;
 	}
 
 	@Override
-	public String approveAccount(long mobileNo) {
+	public String approveAccount(long mobileNo) throws UserNotFoundException {
 		
 		List<Customer> accounts = custDao.findAll();
 		int flag=0;
 		for(Customer acc:accounts) {
+			if(acc.getPhoneNo()==mobileNo)
+			{
 			if((acc.getAccountStatus().equalsIgnoreCase("pending")))
 			{
 				if(acc.getAge()>18)
@@ -113,17 +120,20 @@ public class AccountServiceImpl implements AccountService {
 					Account account=new Account(mobileNo);
 					accountDao.save(account);
 					flag=1;
+					break;
 				}
 				else
 				{
 					acc.setAccountStatus("rejected");
 					flag=2;
+		            break;
 				}
+			}
 			}
 		}
 		if(flag==0)
 		{
-			return "Account with mobile number not found";
+			throw new UserNotFoundException("Account with mobile number"+mobileNo+" not found");
 		}
 		else if(flag==1)
 		{
@@ -138,8 +148,26 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public String updatePersonalDetail(Customer customer) {
 		
-		Customer cust=custDao.saveAndFlush(customer);
-		return "Personal detail sucessfully updated for "+cust.getCustName();
+		  int flag=0;
+		  List<Customer> allCustList = custDao.findAll();
+		  
+		  for(Customer cust:allCustList) {
+			  if(cust.getPhoneNo()==customer.getPhoneNo()) {
+				  flag=1;
+				  break;
+			  }}
+		  
+		  if(flag==0)
+		  {
+			 return "User with Detail "+customer.getPhoneNo()+" Not Found";
+		  }
+		  else
+		  {
+			  custDao.saveAndFlush(customer);
+			  return "Personal detail sucessfully updated for "+customer.getCustName();
+		  }
+
+		
 	}
 		
 	
