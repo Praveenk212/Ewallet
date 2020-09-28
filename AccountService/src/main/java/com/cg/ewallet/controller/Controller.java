@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.cg.ewallet.dto.Customer;
+import com.cg.ewallet.exception.UserExistsException;
+import com.cg.ewallet.exception.UserNotFoundException;
 import com.cg.ewallet.service.AccountService;
 
 import org.slf4j.Logger;
@@ -35,11 +38,6 @@ public class Controller {
 
 	Logger log=LoggerFactory.getLogger(Controller.class);
 
-	//	public Controller() {
-	//		super();
-	//		PropertyConfigurator.configure("controller.properties");
-	//	}
-
 
 	@Autowired(required=true)
 	AccountService accService;
@@ -48,19 +46,32 @@ public class Controller {
 	@PostMapping(value="/newcustomer")
 	public ResponseEntity<String> createCustomerAccount(@RequestBody Customer customer)
 	{
-		String toBeReturned= accService.createCustomerAccount(customer);
+		String accountCreationMessage="";
+		try
+		{
+		    accountCreationMessage= accService.createCustomerAccount(customer);
+		}catch(UserExistsException ex) {
+			return new ResponseEntity<String>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+		}
 		log.info("Creating New Account");
 		if(HttpStatus.BAD_REQUEST==null)
 		{
 			log.warn("Bad request");	
 		}
-		return new ResponseEntity<String>(toBeReturned,HttpStatus.OK);
+		return new ResponseEntity<String>(accountCreationMessage,HttpStatus.OK);
 	}
+	
 	
 	@GetMapping("/getcustomerbymobile/{mobileno}")
 	public ResponseEntity<Customer> getCustomerByMobileNumber(@PathVariable long mobileno)
 	{
-		Customer customer=accService.getUserByMobileNumber(mobileno);
+		Customer customer = null;
+		try {
+			customer = accService.getUserByMobileNumber(mobileno);
+		} catch (UserNotFoundException e) {
+			//return new ResponseEntity<Customer>(customer,HttpStatus.BAD_REQUEST);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+		}
 		log.info("Get Detail by mobile number");
 		if(HttpStatus.BAD_REQUEST==null)
 		{

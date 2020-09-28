@@ -11,6 +11,8 @@ import com.cg.ewallet.dao.AccountDao;
 import com.cg.ewallet.dao.CustomerDao;
 import com.cg.ewallet.dto.Account;
 import com.cg.ewallet.dto.Customer;
+import com.cg.ewallet.exception.UserExistsException;
+import com.cg.ewallet.exception.UserNotFoundException;
 import com.cg.ewallet.validation.EwalletValidation;
 
 
@@ -27,7 +29,7 @@ public class AccountServiceImpl implements AccountService {
 	EwalletValidation ewalletValidation;
 	
 	@Override
-	public String createCustomerAccount(Customer customer) {
+	public String createCustomerAccount(Customer customer) throws UserExistsException  {
 	
 		
 		List<Customer> customers = custDao.findAll();
@@ -43,7 +45,7 @@ public class AccountServiceImpl implements AccountService {
 		
 		if(flag==1)
 		{
-			return "Mobile Number alredy Exist try to Login";
+			throw new UserExistsException("User With this mobile number already Exist");
 		}
 		else
 		{
@@ -62,18 +64,22 @@ public class AccountServiceImpl implements AccountService {
 	
 
 	@Override
-	public Customer getUserByMobileNumber(long mobileNo) {
+	public Customer getUserByMobileNumber(long mobileNo) throws UserNotFoundException {
 		
 		  Customer customer = null;
 		  List<Customer> allCustList = custDao.findAll();
 		  
 		  for(Customer cust:allCustList) {
-			  
 			  if(cust.getPhoneNo()==mobileNo) {
 				  System.out.println(cust);
 				  customer= cust;
 				  break;
 			  }}
+		  
+		  if(customer==null)
+		  {
+			  throw new UserNotFoundException("User with "+mobileNo+" Not Found");
+		  }
 		  
 		  return customer;
 		

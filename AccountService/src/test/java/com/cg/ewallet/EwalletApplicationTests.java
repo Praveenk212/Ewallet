@@ -18,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.cg.ewallet.dao.CustomerDao;
 import com.cg.ewallet.dto.Customer;
+import com.cg.ewallet.exception.UserExistsException;
 import com.cg.ewallet.service.AccountService;
 import com.cg.ewallet.validation.EwalletValidation;
 
@@ -43,7 +44,7 @@ class EwalletApplicationTests {
 	private CustomerDao custDao;
 	
 	@Test
-	public void createNewCustomerTest()
+	public void createNewCustomerTest() throws UserExistsException
 	{
 		Customer custOne = new Customer(7876543212l, "John@123", "John", 19,"Male","howtodoinjava@gmail.com");
 		when(custDao.save(custOne)).thenReturn(custOne);
