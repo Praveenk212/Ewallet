@@ -24,7 +24,7 @@ public class Account {
 			sb.append(1000);
 
 			// rest of 11 digits
-			for (int i = 0; i < 9; i++) {
+			for (int i = 0; i < 8; i++) {
 				sb.append(rand.nextInt(10));
 			}
 		return Long.parseLong(sb.toString());
