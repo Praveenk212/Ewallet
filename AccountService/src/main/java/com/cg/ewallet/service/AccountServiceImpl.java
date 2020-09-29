@@ -6,9 +6,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.cg.ewallet.dao.AccountDao;
 import com.cg.ewallet.dao.CustomerDao;
+import com.cg.ewallet.dto.AccountDTO;
 import com.cg.ewallet.dto.CustomerDTO;
 import com.cg.ewallet.entity.Account;
 import com.cg.ewallet.entity.Customer;
@@ -29,6 +31,8 @@ public class AccountServiceImpl implements AccountService {
 	AccountDao accountDao;
 	@Autowired(required = true)
 	EwalletValidation ewalletValidation;
+	@Autowired
+	RestTemplate restTemplate;
 
 	@Override
 	public String createCustomerAccount(CustomerDTO customer) throws UserExistsException  {
@@ -133,6 +137,7 @@ public class AccountServiceImpl implements AccountService {
 						{
 							acc.setAccountStatus("approved");
 							Account account=new Account(mobileNo);
+							restTemplate.postForObject("http://Transaction-Service/newUser", account, AccountDTO.class);
 							accountDao.save(account);
 							flag=1;
 						}
