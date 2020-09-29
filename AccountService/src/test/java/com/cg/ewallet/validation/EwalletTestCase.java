@@ -4,18 +4,20 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class EwalletTestCase {
 		
+	@Autowired
 		EwalletValidation validation;
-		@Before
-		public void Start()
-		{
-			validation=new EwalletValidation();
-		}
+//		@Before
+//		public void Start()
+//		{
+//			validation=new EwalletValidation();
+//		}
 		@Test
 		public void testIsValidIncomeForFloat() 
 		{

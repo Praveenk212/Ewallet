@@ -1,4 +1,4 @@
-package com.cg.ewallet.dto;
+package com.cg.ewallet.entity;
 
 public class CustomErrorDetails {
 	

@@ -2,7 +2,7 @@ package com.cg.ewallet.service;
 
 import java.util.List;
 
-import com.cg.ewallet.dto.Customer;
+import com.cg.ewallet.entity.Customer;
 import com.cg.ewallet.exception.NoPendingAccount;
 import com.cg.ewallet.exception.UserExistsException;
 import com.cg.ewallet.exception.UserNotFoundException;

@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.cg.ewallet.dto.CustomErrorDetails;
+import com.cg.ewallet.entity.CustomErrorDetails;
 
 @ControllerAdvice
 public class CustomExceptionHandler  {
@@ -16,7 +16,7 @@ public class CustomExceptionHandler  {
 	public ResponseEntity<CustomErrorDetails> mapException(Exception exc)
 	{
 		CustomErrorDetails customError=new CustomErrorDetails(HttpStatus.NOT_FOUND.toString(),exc.getMessage());
-		return new ResponseEntity<CustomErrorDetails>(customError,HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(customError,HttpStatus.NOT_FOUND);
 	}
 	
 

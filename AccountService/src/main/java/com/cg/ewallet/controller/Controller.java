@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cg.ewallet.dto.Customer;
+import com.cg.ewallet.entity.Customer;
 import com.cg.ewallet.exception.NoPendingAccount;
 import com.cg.ewallet.exception.UserExistsException;
 import com.cg.ewallet.exception.UserNotFoundException;
@@ -48,14 +48,14 @@ public class Controller {
 		{
 		    accountCreationMessage= accService.createCustomerAccount(customer);
 		}catch(UserExistsException ex) {
-			return new ResponseEntity<String>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
 		}
 		log.info("Creating New Account");
 		if(HttpStatus.BAD_REQUEST==null)
 		{
 			log.warn("Not a Proper Request");	
 		}
-		return new ResponseEntity<String>(accountCreationMessage,HttpStatus.OK);
+		return new ResponseEntity<>(accountCreationMessage,HttpStatus.OK);
 	}
 	
 	
@@ -66,7 +66,7 @@ public class Controller {
 		try {
 			customer = accService.getUserByMobileNumber(mobileno);
 		} catch (UserNotFoundException e) {
-			//return new ResponseEntity<Customer>(customer,HttpStatus.BAD_REQUEST);
+
 			throw new UserNotFoundException(e.getMessage());
 		}
 		log.info("Get Detail by mobile number");
@@ -74,7 +74,7 @@ public class Controller {
 		{
 			log.warn("Get Detail By mobile number failed");
 		}
-		return new ResponseEntity<Customer>(customer,HttpStatus.OK);
+		return new ResponseEntity<>(customer,HttpStatus.OK);
 	}
 
 	@GetMapping("/getallcustomer")
@@ -87,7 +87,7 @@ public class Controller {
 		{
 			log.warn("Getting all user deatil failed");
 		}
-		return new ResponseEntity<List<Customer>>(customers,HttpStatus.OK);
+		return new ResponseEntity<>(customers,HttpStatus.OK);
 	}
 	
 	@GetMapping("/getaccounttoapprove")
@@ -108,7 +108,7 @@ public class Controller {
 		{
 			log.warn("All pending accont getting is failed");
 		}
-		return new ResponseEntity<List<Customer>>(customers,HttpStatus.OK);
+		return new ResponseEntity<>(customers,HttpStatus.OK);
 	}
 	
 	@GetMapping("/approveaccount/{mobileNo}")
@@ -127,7 +127,7 @@ public class Controller {
 		{
 			log.warn("Approve Account Failed");
 		}
-		return new ResponseEntity<String>(accountstatusmsg,HttpStatus.OK);
+		return new ResponseEntity<>(accountstatusmsg,HttpStatus.OK);
 	}
 	
 	@PostMapping(value="/updatedetail")
@@ -139,7 +139,7 @@ public class Controller {
 		{
 			log.warn("Updating Detail Failed");	
 		}
-		return new ResponseEntity<String>(updateMessage,HttpStatus.OK);
+		return new ResponseEntity<>(updateMessage,HttpStatus.OK);
 	}
 
 

@@ -44,22 +44,7 @@ public class EwalletValidation
 		String regex="^[a-zA-Z\\\\s]*$";
 		return name.matches(regex);
 	}
-	
-	public boolean checkCustomerAge(String custAge)
-	{
-		char ch[]=custAge.toCharArray();
-		for(int i=0;i<ch.length;i++)
-		{
-			if(!Character.isDigit(ch[i]))
-			{
-				return false;
-			}
-		}
-		int age=Integer.parseInt(custAge);
 		
-		return (age>1 && age<=120)?true:false; 
-	
-	}	
 	public boolean checkCustomerGender(String gender)
 	{
 		return gender.equalsIgnoreCase("male") || gender.equalsIgnoreCase("female") ;

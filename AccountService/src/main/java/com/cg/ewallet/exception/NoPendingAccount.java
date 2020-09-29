@@ -9,7 +9,6 @@ public class NoPendingAccount extends Exception {
 
 	public NoPendingAccount(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 	
 
