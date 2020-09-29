@@ -1,5 +1,7 @@
 package com.cg.ewallet.entity;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Random;
 
 import javax.persistence.Column;
@@ -12,20 +14,16 @@ import javax.persistence.Table;
 @Table(name="account")
 public class Account {
 
-	public static long generateAccount() {
-		Random ran = new Random();
-		StringBuilder sb = new StringBuilder();
+	public static long generateAccount() throws NoSuchAlgorithmException {
+		Random rand = SecureRandom.getInstanceStrong();
+		StringBuilder sb=new StringBuilder();
+			// first not 0 digit
+			sb.append(rand.nextInt(9) + 1);
 
-		
-		int rValue = ran.nextInt(9);
-		// first not 0 digit
-		sb.append(rValue + 1);
-
-		// rest of 11 digits
-		for (int i = 0; i < 11; i++) {
-			sb.append(ran.nextInt(10));
-		}
-
+			// rest of 11 digits
+			for (int i = 0; i < 11; i++) {
+				sb.append(rand.nextInt(10));
+			}
 		return Long.parseLong(sb.toString());
 	}
 
@@ -36,8 +34,6 @@ public class Account {
 	private long accNo;
 	@Column(name="balance")
 	private float balance;
-
-
 
 
 	/*
@@ -52,7 +48,7 @@ public class Account {
 		this.balance = balance;
 		this.phoneNo = phoneNo;
 	}
-	public Account(long phoneNo) {
+	public Account(long phoneNo) throws NoSuchAlgorithmException {
 		super();
 		this.accNo=Account.generateAccount();
 		this.balance = 0;

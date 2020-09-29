@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cg.ewallet.dto.CustomerDTO;
 import com.cg.ewallet.entity.Customer;
 import com.cg.ewallet.exception.NoPendingAccount;
 import com.cg.ewallet.exception.UserExistsException;
@@ -20,6 +21,7 @@ import com.cg.ewallet.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RestController
@@ -41,7 +43,7 @@ public class Controller {
 
 
 	@PostMapping(value="/newcustomer")
-	public ResponseEntity<String> createCustomerAccount(@RequestBody Customer customer)
+	public ResponseEntity<String> createCustomerAccount(@RequestBody CustomerDTO customer)
 	{
 		String accountCreationMessage="";
 		try
@@ -112,7 +114,7 @@ public class Controller {
 	}
 	
 	@GetMapping("/approveaccount/{mobileNo}")
-	public ResponseEntity<String> approveAccount(@PathVariable long mobileNo) throws UserNotFoundException
+	public ResponseEntity<String> approveAccount(@PathVariable long mobileNo) throws UserNotFoundException, NoSuchAlgorithmException
 	{
 		String accountstatusmsg=null;
 		try
@@ -131,7 +133,7 @@ public class Controller {
 	}
 	
 	@PostMapping(value="/updatedetail")
-	public ResponseEntity<String> updateDetail(@RequestBody Customer customer)
+	public ResponseEntity<String> updateDetail(@RequestBody CustomerDTO customer)
 	{
 		String updateMessage= accService.updatePersonalDetail(customer);
 		log.info("Updating Detail ");

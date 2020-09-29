@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import com.cg.ewallet.dao.CustomerDao;
+import com.cg.ewallet.dto.CustomerDTO;
 import com.cg.ewallet.entity.Customer;
 import com.cg.ewallet.exception.UserExistsException;
 
@@ -35,7 +36,9 @@ public class AccountServiceImplTest {
 	{
 		Customer custOne = new Customer(7876543212l, "John@123", "John", 19,"Male","howtodoinjava@gmail.com");
 		when(custDao.save(custOne)).thenReturn(custOne);
-	    assertEquals("Account Detail sucessfully submitted", accService.createCustomerAccount(custOne).toString());
+	    assertEquals("Account Detail sucessfully submitted", accService.createCustomerAccount(
+	    		new CustomerDTO(custOne.getPhoneNo(), custOne.getPassword(), custOne.getCustName(), custOne.getAge(),
+	    				custOne.getGender(), custOne.getEmailId())));
 	}
 	@Test
 	public void getAllUserTest()

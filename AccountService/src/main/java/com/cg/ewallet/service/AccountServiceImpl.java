@@ -1,5 +1,6 @@
 package com.cg.ewallet.service;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.cg.ewallet.dao.AccountDao;
 import com.cg.ewallet.dao.CustomerDao;
+import com.cg.ewallet.dto.CustomerDTO;
 import com.cg.ewallet.entity.Account;
 import com.cg.ewallet.entity.Customer;
 import com.cg.ewallet.exception.NoPendingAccount;
@@ -29,7 +31,7 @@ public class AccountServiceImpl implements AccountService {
 	EwalletValidation ewalletValidation;
 
 	@Override
-	public String createCustomerAccount(Customer customer) throws UserExistsException  {
+	public String createCustomerAccount(CustomerDTO customer) throws UserExistsException  {
 
 
 		List<Customer> customers = custDao.findAll();
@@ -49,7 +51,8 @@ public class AccountServiceImpl implements AccountService {
 		}
 		else
 		{
-			custDao.save(customer);
+			custDao.save(new Customer(customer.getPhoneNo(), customer.getPassword(), customer.getCustName(), customer.getAge(),
+					customer.getGender(), customer.getEmailId()));
 			return "Account Detail sucessfully submitted"; 
 		}
 	}
@@ -107,7 +110,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public String approveAccount(long mobileNo) throws UserNotFoundException {
+	public String approveAccount(long mobileNo) throws UserNotFoundException, NoSuchAlgorithmException {
 
 		List<Customer> accounts = custDao.findAll();
 		int flag=0;
@@ -115,18 +118,19 @@ public class AccountServiceImpl implements AccountService {
 		{
 			if(acc.getPhoneNo()==mobileNo && (acc.getAccountStatus().equalsIgnoreCase("pending")))
 			{
-					if(acc.getAge()>18)
-					{
-						acc.setAccountStatus("approved");
-						Account account=new Account(mobileNo);
-						accountDao.save(account);
-						flag=1;
-					}
-					else
-					{
-						acc.setAccountStatus("rejected");
-						flag=2;
-					}
+					
+						if(acc.getAge()>18)
+						{
+							acc.setAccountStatus("approved");
+							Account account=new Account(mobileNo);
+							accountDao.save(account);
+							flag=1;
+						}
+						else
+						{
+							acc.setAccountStatus("rejected");
+							flag=2;
+						}
 				break;
 			}
 		}
@@ -145,7 +149,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public String updatePersonalDetail(Customer customer) {
+	public String updatePersonalDetail(CustomerDTO customer) {
 
 		int flag=0;
 		List<Customer> allCustList = custDao.findAll();
@@ -162,7 +166,8 @@ public class AccountServiceImpl implements AccountService {
 		}
 		else
 		{
-			custDao.saveAndFlush(customer);
+			custDao.saveAndFlush(new Customer(customer.getPhoneNo(), customer.getPassword(), customer.getCustName(), customer.getAge(),
+					customer.getGender(), customer.getEmailId()));
 			return "Personal detail sucessfully updated for "+customer.getCustName();
 		}
 
