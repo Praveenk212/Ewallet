@@ -109,6 +109,7 @@ public class CustomerDTO {
 	
 	/*	
 		Override toString() method
+		//To string method this method will show following detail if you print instance of this class
 	*/
 	
 	@Override

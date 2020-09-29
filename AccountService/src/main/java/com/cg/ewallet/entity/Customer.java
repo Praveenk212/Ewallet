@@ -9,19 +9,19 @@ import javax.persistence.Table;
 @Table(name="Customer")
 public class Customer {
 	@Id
-	@Column(name="phoneno")
+	@Column(name="phoneno", length = 10, nullable = false, unique = true)
 	private long phoneNo;
-	@Column(name="password")
+	@Column(name="password", length = 50, nullable = false, unique = true)
 	private String password;
-	@Column(name="custname")
+	@Column(name="custname", length = 50, nullable = false, unique = true)
 	private String custName;
-	@Column(name="age")
+	@Column(name="age", length = 3, nullable = false, unique = true)
 	private int age;
-	@Column(name="gender")
+	@Column(name="gender", length = 50, nullable = false, unique = true)
 	private String gender;
-	@Column(name="emailid")
+	@Column(name="emailid", length = 50, nullable = false, unique = true)
 	private String emailId;
-	@Column(name="accountstatus")
+	@Column(name="accountstatus", length = 50, nullable = false, unique = true)
 	private String accountStatus;
 
 	
@@ -124,8 +124,9 @@ public class Customer {
 	
 
 	/*	
-		Override toString() method
-	*/
+	Override toString() method
+	//To string method this method will show following detail if you print instance of this class
+*/
 	
 	@Override
 	public String toString() {

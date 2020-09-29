@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class EwalletValidation 
 {
+	
 	public boolean isFloat(String value)
 	{
 		String regex="[-+]?(\\d+)|(\\d*\\.\\d+)";

@@ -58,7 +58,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 
-
+	//For getting all the accont that are there in the database 
 	@Override
 	public List<Customer> getAllUser() {
 
@@ -66,6 +66,9 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 
+	
+	
+	//To Get the Customer Details based on there mobile number
 	@Override
 	public Customer getUserByMobileNumber(long mobileNo) throws UserNotFoundException {
 
@@ -87,6 +90,9 @@ public class AccountServiceImpl implements AccountService {
 
 	}
 
+	
+	//This method will give the list of account whose account creation detail is pending
+		//method will throw a exception if there is no pending account.
 	@Override
 	public List<Customer> getAccountsToApprove() throws NoPendingAccount{
 
@@ -109,6 +115,10 @@ public class AccountServiceImpl implements AccountService {
 
 	}
 
+	
+	//This method will approve the account of person based on there age 
+	//method accept mobile number as argument
+	//Will throw a exception user not found if no user in pending account have given mobile number
 	@Override
 	public String approveAccount(long mobileNo) throws UserNotFoundException, NoSuchAlgorithmException {
 
@@ -148,6 +158,8 @@ public class AccountServiceImpl implements AccountService {
 		}	
 	}
 
+	
+	//Use to update the detail of user if there is any error in the user data
 	@Override
 	public String updatePersonalDetail(CustomerDTO customer) {
 

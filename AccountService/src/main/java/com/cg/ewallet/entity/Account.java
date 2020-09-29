@@ -14,14 +14,17 @@ import javax.persistence.Table;
 @Table(name="account")
 public class Account {
 
+	
+	
+	//This method is used to create account number of 12 digit 
 	public static long generateAccount() throws NoSuchAlgorithmException {
 		Random rand = SecureRandom.getInstanceStrong();
 		StringBuilder sb=new StringBuilder();
-			// first not 0 digit
-			sb.append(rand.nextInt(9) + 1);
+			// Account number starts with 1000
+			sb.append(1000);
 
 			// rest of 11 digits
-			for (int i = 0; i < 11; i++) {
+			for (int i = 0; i < 9; i++) {
 				sb.append(rand.nextInt(10));
 			}
 		return Long.parseLong(sb.toString());
@@ -56,6 +59,11 @@ public class Account {
 	}
 
 
+	
+	/*	
+	Override toString() method
+	//To string method this method will show following detail if you print instance of this class
+*/
 	@Override
 	public String toString() {
 		return "Account [accNo=" + accNo + ", balance=" + balance + ", phoneNo=" + phoneNo

@@ -29,6 +29,9 @@ import java.util.List;
 @CrossOrigin(origins="http://localhost:4200",allowedHeaders="*")
 public class Controller {
 
+	
+	//This Method will Show the given test when you hit
+	//localhost:portnumber
 	@GetMapping("/")
 	public String homePage()
 	{
@@ -42,6 +45,7 @@ public class Controller {
 	AccountService accService;
 
 
+	//For Creating a new user account by getting Customer dto object
 	@PostMapping(value="/newcustomer")
 	public ResponseEntity<String> createCustomerAccount(@RequestBody CustomerDTO customer)
 	{
@@ -50,6 +54,7 @@ public class Controller {
 		{
 		    accountCreationMessage= accService.createCustomerAccount(customer);
 		}catch(UserExistsException ex) {
+			//Throw an exception when user with mobilenumber already exist on db
 			return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
 		}
 		log.info("Creating New Account");
@@ -61,6 +66,7 @@ public class Controller {
 	}
 	
 	
+	//To Get the Customer Details based on there mobile number
 	@GetMapping("/getcustomerbymobile/{mobileno}")
 	public ResponseEntity<Customer> getCustomerByMobileNumber(@PathVariable long mobileno) throws UserNotFoundException
 	{
@@ -68,17 +74,22 @@ public class Controller {
 		try {
 			customer = accService.getUserByMobileNumber(mobileno);
 		} catch (UserNotFoundException e) {
-
+           //wILL throw this exception if database doesnot have any 
+			//user with given mobile number
 			throw new UserNotFoundException(e.getMessage());
 		}
 		log.info("Get Detail by mobile number");
 		if(HttpStatus.BAD_REQUEST==null)
 		{
+			//Will log this message if there is a bad request
 			log.warn("Get Detail By mobile number failed");
 		}
 		return new ResponseEntity<>(customer,HttpStatus.OK);
 	}
 
+	
+	
+	//For getting all the accont that are there in the database 
 	@GetMapping("/getallcustomer")
 	public ResponseEntity<List<Customer>> getAllCustomer()
 	{
@@ -92,6 +103,10 @@ public class Controller {
 		return new ResponseEntity<>(customers,HttpStatus.OK);
 	}
 	
+	
+	
+	//This method will give the list of account whose account creation detail is pending
+	//method will throw a exception if there is no pending account.
 	@GetMapping("/getaccounttoapprove")
 	public ResponseEntity<List<Customer>> getAccountToApprove() throws NoPendingAccount
 	{
@@ -113,6 +128,12 @@ public class Controller {
 		return new ResponseEntity<>(customers,HttpStatus.OK);
 	}
 	
+	
+	
+	
+	//This method will approve the account of person based on there age 
+	//method accept mobile number as argument
+	//Will throw a exception user not found if no user in pending account have given mobile number
 	@GetMapping("/approveaccount/{mobileNo}")
 	public ResponseEntity<String> approveAccount(@PathVariable long mobileNo) throws UserNotFoundException, NoSuchAlgorithmException
 	{
@@ -132,6 +153,9 @@ public class Controller {
 		return new ResponseEntity<>(accountstatusmsg,HttpStatus.OK);
 	}
 	
+	
+	
+	//Use to update the detail of user if there is any error in the user data
 	@PostMapping(value="/updatedetail")
 	public ResponseEntity<String> updateDetail(@RequestBody CustomerDTO customer)
 	{

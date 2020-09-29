@@ -25,6 +25,8 @@ public class AccountDTO {
 
 
 
+	
+	//To string method this method will show following detail if you print instance of this class
 	@Override
 	public String toString() {
 		return "Account [accNo=" + accNo + ", balance=" + balance + ", phoneNo=" + phoneNo
@@ -32,6 +34,9 @@ public class AccountDTO {
 	}
 
 
+	
+	
+	//Setter and getter method for the attributes
 	public void setPhoneNo(long phoneNo) {
 		this.phoneNo = phoneNo;
 	}
