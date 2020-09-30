@@ -8,11 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.cg.ewallet.dao.AccountDao;
 import com.cg.ewallet.dao.CustomerDao;
 import com.cg.ewallet.dto.AccountDTO;
 import com.cg.ewallet.dto.CustomerDTO;
-import com.cg.ewallet.entity.Account;
 import com.cg.ewallet.entity.Customer;
 import com.cg.ewallet.exception.NoPendingAccount;
 import com.cg.ewallet.exception.UserExistsException;
@@ -27,8 +25,6 @@ public class AccountServiceImpl implements AccountService {
 
 	@Autowired(required = true)
 	CustomerDao custDao;
-	@Autowired(required = true)
-	AccountDao accountDao;
 	@Autowired(required = true)
 	EwalletValidation ewalletValidation;
 	@Autowired
@@ -136,9 +132,9 @@ public class AccountServiceImpl implements AccountService {
 						if(acc.getAge()>18)
 						{
 							acc.setAccountStatus("approved");
-							Account account=new Account(mobileNo);
+							AccountDTO account=new AccountDTO(mobileNo);
 							restTemplate.postForObject("http://Transaction-Service/newUser", account, AccountDTO.class);
-							accountDao.save(account);
+							custDao.saveAndFlush(acc);
 							flag=1;
 						}
 						else
