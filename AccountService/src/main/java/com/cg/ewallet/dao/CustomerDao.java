@@ -7,5 +7,6 @@ import com.cg.ewallet.entity.Customer;
 
 public interface CustomerDao extends JpaRepository<Customer,Integer> {
 
-	
+	   
 }
+  
