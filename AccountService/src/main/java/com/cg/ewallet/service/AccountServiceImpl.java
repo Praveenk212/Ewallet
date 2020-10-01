@@ -12,6 +12,8 @@ import com.cg.ewallet.dao.CustomerDao;
 import com.cg.ewallet.dto.AccountDTO;
 import com.cg.ewallet.dto.CustomerDTO;
 import com.cg.ewallet.entity.Customer;
+import com.cg.ewallet.exception.CustomerInfoNotValid;
+import com.cg.ewallet.exception.MobileNoNotValid;
 import com.cg.ewallet.exception.NoPendingAccount;
 import com.cg.ewallet.exception.UserExistsException;
 import com.cg.ewallet.exception.UserNotFoundException;
@@ -26,35 +28,41 @@ public class AccountServiceImpl implements AccountService {
 	@Autowired(required = true)
 	CustomerDao custDao;
 	@Autowired(required = true)
-	EwalletValidation ewalletValidation;
+	EwalletValidation validation;
 	@Autowired
 	RestTemplate restTemplate;
 
 	@Override
-	public String createCustomerAccount(CustomerDTO customer) throws UserExistsException  {
-
+	public String createCustomerAccount(CustomerDTO customer) throws UserExistsException, CustomerInfoNotValid  {
 
 		List<Customer> customers = custDao.findAll();
 		int flag=0;
 
-		for(Customer cust:customers){
-			if(cust.getPhoneNo()==customer.getPhoneNo())
-			{
-				flag=1;
-				break;
+		if( EwalletValidation.checkCustomerMobile(customer.getPhoneNo()+"".toString()) &&
+				EwalletValidation.checkCustomerName(customer.getCustName()) &&
+				EwalletValidation.checkPassword(customer.getPassword()) &&
+				EwalletValidation.checkCustomerEmail(customer.getEmailId()))
+		{
+			for(Customer cust:customers){
+				if(cust.getPhoneNo()==customer.getPhoneNo())
+				{
+					flag=1;
+					break;
+				}
 			}
-		}
 
-		if(flag==1)
-		{
-			throw new UserExistsException("User With this mobile number already Exist");
-		}
+			if(flag==1)
+			{
+				throw new UserExistsException("User With this mobile number already Exist");
+			}
+			else
+			{
+				custDao.save(new Customer(customer.getPhoneNo(), customer.getPassword(), customer.getCustName(), customer.getAge(),
+						customer.getGender(), customer.getEmailId()));
+				return "Account Detail sucessfully submitted"; 
+			}}
 		else
-		{
-			custDao.save(new Customer(customer.getPhoneNo(), customer.getPassword(), customer.getCustName(), customer.getAge(),
-					customer.getGender(), customer.getEmailId()));
-			return "Account Detail sucessfully submitted"; 
-		}
+			throw new CustomerInfoNotValid("Please give correct data");
 	}
 
 
@@ -66,33 +74,39 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 
-	
-	
+
+
 	//To Get the Customer Details based on there mobile number
 	@Override
-	public Customer getUserByMobileNumber(long mobileNo) throws UserNotFoundException {
+	public Customer getUserByMobileNumber(long mobileNo) throws UserNotFoundException, MobileNoNotValid {
 
 		Customer customer = null;
 		List<Customer> allCustList = custDao.findAll();
 
-		for(Customer cust:allCustList) {
-			if(cust.getPhoneNo()==mobileNo) {
-				customer= cust;
-				break;
-			}}
-
-		if(customer==null)
+		if(!EwalletValidation.checkCustomerMobile(mobileNo+"".toString()))
 		{
-			throw new UserNotFoundException("User with "+mobileNo+" Not Found");
+			throw new MobileNoNotValid("Please enter a valid mobile number");
 		}
+		else
+		{
+			for(Customer cust:allCustList) {
+				if(cust.getPhoneNo()==mobileNo) {
+					customer= cust;
+					break;
+				}}
 
-		return customer;
+			if(customer==null)
+			{
+				throw new UserNotFoundException("User with "+mobileNo+" Not Found");
+			}
 
-	}
+			return customer;
 
-	
+		}}
+
+
 	//This method will give the list of account whose account creation detail is pending
-		//method will throw a exception if there is no pending account.
+	//method will throw a exception if there is no pending account.
 	@Override
 	public List<Customer> getAccountsToApprove() throws NoPendingAccount{
 
@@ -115,7 +129,7 @@ public class AccountServiceImpl implements AccountService {
 
 	}
 
-	
+
 	//This method will approve the account of person based on there age 
 	//method accept mobile number as argument
 	//Will throw a exception user not found if no user in pending account have given mobile number
@@ -128,20 +142,20 @@ public class AccountServiceImpl implements AccountService {
 		{
 			if(acc.getPhoneNo()==mobileNo && (acc.getAccountStatus().equalsIgnoreCase("pending")))
 			{
-					
-						if(acc.getAge()>18)
-						{
-							acc.setAccountStatus("approved");
-							AccountDTO account=new AccountDTO(mobileNo);
-							restTemplate.postForObject("http://Transaction-Service/newUser", account, AccountDTO.class);
-							custDao.saveAndFlush(acc);
-							flag=1;
-						}
-						else
-						{
-							acc.setAccountStatus("rejected");
-							flag=2;
-						}
+
+				if(acc.getAge()>18)
+				{
+					acc.setAccountStatus("approved");
+					AccountDTO account=new AccountDTO(mobileNo);
+					restTemplate.postForObject("http://Transaction-Service/newUser", account, AccountDTO.class);
+					custDao.saveAndFlush(acc);
+					flag=1;
+				}
+				else
+				{
+					acc.setAccountStatus("rejected");
+					flag=2;
+				}
 				break;
 			}
 		}
@@ -159,14 +173,19 @@ public class AccountServiceImpl implements AccountService {
 		}	
 	}
 
-	
+
 	//Use to update the detail of user if there is any error in the user data
 	@Override
-	public String updatePersonalDetail(CustomerDTO customer) {
+	public String updatePersonalDetail(CustomerDTO customer) throws CustomerInfoNotValid {
 
 		int flag=0;
 		List<Customer> allCustList = custDao.findAll();
 
+		if( EwalletValidation.checkCustomerMobile(customer.getPhoneNo()+"".toString()) &&
+				EwalletValidation.checkCustomerName(customer.getCustName()) &&
+				EwalletValidation.checkPassword(customer.getPassword()) &&
+				EwalletValidation.checkCustomerEmail(customer.getEmailId()))
+		{
 		for(Customer cust:allCustList) {
 			if(cust.getPhoneNo()==customer.getPhoneNo()) {
 				flag=1;
@@ -183,7 +202,10 @@ public class AccountServiceImpl implements AccountService {
 					customer.getGender(), customer.getEmailId()));
 			return "Personal detail sucessfully updated for "+customer.getCustName();
 		}
-
+		}
+		else
+			throw new CustomerInfoNotValid("Please give correct data");
+			
 
 	}
 

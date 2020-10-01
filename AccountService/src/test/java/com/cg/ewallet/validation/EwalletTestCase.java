@@ -11,103 +11,116 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class EwalletTestCase {
 		
-	@Autowired
+	    @Autowired
 		EwalletValidation validation;
-//		@Before
-//		public void Start()
-//		{
-//			validation=new EwalletValidation();
-//		}
+
 		@Test
-		public void testIsValidIncomeForFloat() 
+		public void testCustomerCompleteName() 
 		{
-			boolean flag=validation.isFloat("123.98");
+			boolean flag=EwalletValidation.checkCustomerName("Praveen Kumar");
 			assertTrue(flag);	
 		}
+
 		@Test
-		public void testIsValidIncomeForString() 
+		public void testCustomerCompleteNameWithDigits() 
 		{
-			boolean flag=validation.isFloat("abc");
+			boolean flag=EwalletValidation.checkCustomerName("Praveen212");
 			assertFalse(flag);	
 		}
 		@Test
-		public void testIsValidIncomeForCombinationStartWithAlphabet() 
+		public void testCustomerCompleteNameConatinsSpecialChar() 
 		{
-			boolean flag=validation.isFloat("abc123.98");
+			boolean flag=EwalletValidation.checkCustomerName("Praveen@Kumar");
 			assertFalse(flag);	
 		}
 		@Test
-		public void testIsValidIncomeForCombinationStartsWithInt() 
+		public void testCustomerCompleteNameConatinsOnlyDigits() 
 		{
-			boolean flag=validation.isFloat("1675abc");
+			boolean flag=EwalletValidation.checkCustomerName("123456");
 			assertFalse(flag);	
 		}
+		
 		@Test
-		public void testIsValidUserName() 
+		public void testCustomerCompleteNameConatinsNumberAndSpecialChar() 
 		{
-			boolean flag=validation.checkUserName("praveen123");
-			assertTrue(flag);	
-		}
-		@Test
-		public void testIsValidUserNameContainsUnserScore() 
-		{
-			boolean flag=validation.checkUserName("praveen123_");
-			assertTrue(flag);	
-		}
-		@Test
-		public void testIsValidUserNameStartsWithCapital() 
-		{
-			boolean flag=validation.checkUserName("Praveen123");
+			boolean flag=EwalletValidation.checkCustomerName("1234@");
 			assertFalse(flag);	
 		}
-		@Test
-		public void testIsValidUserNameContainsCapital() 
-		{
-			boolean flag=validation.checkUserName("pravEEn123");
-			assertFalse(flag);	
-		}
-		@Test
-		public void testIsValidUserNameContainsOnlyDigits() 
-		{
-			boolean flag=validation.checkUserName("988123");
-			assertFalse(flag);	
-		}
+		
+		
 		@Test
 		public void testIsValidPassWord() 
 		{
-			boolean flag=validation.checkPassword("Praveen@1222");
+			boolean flag=EwalletValidation.checkPassword("Praveen@1222");
 			assertTrue(flag);	
 		}
 		@Test
 		public void testIsValidPassWordContainsOnlyDigits() 
 		{
-			boolean flag=validation.checkPassword("988123");
+			boolean flag=EwalletValidation.checkPassword("988123");
 			assertFalse(flag);	
 		}
 		@Test
 		public void testIsValidPassWordContainsOnlyAlphabets() 
 		{
-			boolean flag=validation.checkPassword("abcdef");
+			boolean flag=EwalletValidation.checkPassword("abcdef");
 			assertFalse(flag);	
 		}
 		@Test
 		public void testIsValidPassWordContainsOnlyAlphabetsAndCharacters() 
 		{
-			boolean flag=validation.checkPassword("abcdef123");
+			boolean flag=EwalletValidation.checkPassword("abcdef123");
+			assertFalse(flag);	
+		}
+		
+		@Test
+		public void testCustomerMobileNumber() 
+		{
+			boolean flag=EwalletValidation.checkCustomerMobile("7865432167");
+			assertTrue(flag);	
+		}
+		
+		@Test
+		public void testCustomerMobileNumberContainsCharacter() 
+		{
+			boolean flag=EwalletValidation.checkCustomerMobile("786543216p");
 			assertFalse(flag);	
 		}
 		@Test
-		public void testIsContainsOnlyDigitForRequestId()
+		public void testCustomerMobileNumberContainsSpecialCharacter() 
 		{
-			boolean flag=validation.isDigit("123456");
-			assertTrue(flag);
+			boolean flag=EwalletValidation.checkCustomerMobile("786543216@");
+			assertFalse(flag);	
 		}
+		
 		@Test
-		public void testIsContainsOnlyCharcterForRequestId()
+		public void testCustomerMobileNumberContainsLessThanTenDigits() 
 		{
-			boolean flag=validation.isDigit("abscde");
-			assertFalse(flag);
+			boolean flag=EwalletValidation.checkCustomerMobile("78654321");
+			assertFalse(flag);	
 		}
+		
+		@Test
+		public void testCustomerEmail() 
+		{
+			boolean flag=EwalletValidation.checkCustomerEmail("pk.umar@gmail.com");
+			assertTrue(flag);	
+		}
+		
+		@Test
+		public void testCustomerEmailDontHaveAtSymbol() 
+		{
+			boolean flag=EwalletValidation.checkCustomerEmail("pkgmail.com");
+			assertFalse(flag);	
+		}
+		
+		@Test
+		public void testCustomerEmailDontHaveDotCom() 
+		{
+			boolean flag=EwalletValidation.checkCustomerEmail("pk@gmail");
+			assertFalse(flag);	
+		}
+		
 
 
 	}

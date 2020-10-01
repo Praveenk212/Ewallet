@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.cg.ewallet.dto.CustomerDTO;
 import com.cg.ewallet.entity.Customer;
+import com.cg.ewallet.exception.CustomerInfoNotValid;
+import com.cg.ewallet.exception.MobileNoNotValid;
 import com.cg.ewallet.exception.NoPendingAccount;
 import com.cg.ewallet.exception.UserExistsException;
 import com.cg.ewallet.exception.UserNotFoundException;
@@ -13,7 +15,7 @@ public interface AccountService {
 	
 	
 	//To Get the Customer Details based on there mobile number
-	Customer getUserByMobileNumber(long mobileNo) throws UserNotFoundException;
+	Customer getUserByMobileNumber(long mobileNo) throws UserNotFoundException, MobileNoNotValid;
 	
 	//For getting all the accont that are there in the database 
 	List<Customer> getAllUser();
@@ -32,10 +34,10 @@ public interface AccountService {
 	
 	
 	//For Creating a new user account by getting Customer dto object
-	String createCustomerAccount(CustomerDTO customer) throws UserExistsException;
+	String createCustomerAccount(CustomerDTO customer) throws UserExistsException,CustomerInfoNotValid;
 	
 	
 	//Use to update the detail of user if there is any error in the user data
-	String updatePersonalDetail(CustomerDTO customer);
+	String updatePersonalDetail(CustomerDTO customer) throws CustomerInfoNotValid;
 
 }

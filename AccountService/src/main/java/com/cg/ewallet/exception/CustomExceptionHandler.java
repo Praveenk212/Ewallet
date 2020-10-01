@@ -14,7 +14,7 @@ public class CustomExceptionHandler  {
 
 	
 	//This Method is used to customize the exception.
-	@ExceptionHandler({UserNotFoundException.class, NoPendingAccount.class})
+	@ExceptionHandler({UserNotFoundException.class, NoPendingAccount.class,CustomerInfoNotValid.class,MobileNoNotValid.class})
 	public ResponseEntity<CustomErrorDetails> mapException(Exception exc)
 	{
 		CustomErrorDetails customError=new CustomErrorDetails(HttpStatus.NOT_FOUND.toString(),exc.getMessage());

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.ewallet.dto.CustomerDTO;
 import com.cg.ewallet.entity.Customer;
+import com.cg.ewallet.exception.CustomerInfoNotValid;
+import com.cg.ewallet.exception.MobileNoNotValid;
 import com.cg.ewallet.exception.NoPendingAccount;
 import com.cg.ewallet.exception.UserExistsException;
 import com.cg.ewallet.exception.UserNotFoundException;
@@ -53,7 +55,7 @@ public class Controller {
 		try
 		{
 		    accountCreationMessage= accService.createCustomerAccount(customer);
-		}catch(UserExistsException ex) {
+		}catch(Exception ex) {
 			//Throw an exception when user with mobilenumber already exist on db
 			return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
 		}
@@ -68,7 +70,7 @@ public class Controller {
 	
 	//To Get the Customer Details based on there mobile number
 	@GetMapping("/getcustomerbymobile/{mobileno}")
-	public ResponseEntity<Customer> getCustomerByMobileNumber(@PathVariable long mobileno) throws UserNotFoundException
+	public ResponseEntity<Customer> getCustomerByMobileNumber(@PathVariable long mobileno) throws UserNotFoundException, MobileNoNotValid
 	{
 		Customer customer = null;
 		try {
@@ -157,7 +159,7 @@ public class Controller {
 	
 	//Use to update the detail of user if there is any error in the user data
 	@PostMapping(value="/updatedetail")
-	public ResponseEntity<String> updateDetail(@RequestBody CustomerDTO customer)
+	public ResponseEntity<String> updateDetail(@RequestBody CustomerDTO customer) throws CustomerInfoNotValid
 	{
 		String updateMessage= accService.updatePersonalDetail(customer);
 		log.info("Updating Detail ");

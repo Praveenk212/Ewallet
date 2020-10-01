@@ -35,6 +35,16 @@ public class CustomerDTO {
 		this.emailId = emailId;
 		this.accountStatus = "pending";
 	}
+	public CustomerDTO(long phoneNo, String password, String custName, int age, String gender, String emailId,String status) {
+		super();
+		this.phoneNo = phoneNo;
+		this.password = password;
+		this.custName = custName;
+		this.age = age;
+		this.gender = gender;
+		this.emailId = emailId;
+		this.accountStatus = status;
+	}
 	
 
 
