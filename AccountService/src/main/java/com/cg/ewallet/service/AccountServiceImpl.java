@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import com.cg.ewallet.dao.CustomerDao;
 import com.cg.ewallet.dto.AccountDTO;
 import com.cg.ewallet.dto.CustomerDTO;
+import com.cg.ewallet.dto.UserLoginDetail;
 import com.cg.ewallet.entity.Customer;
 import com.cg.ewallet.exception.CustomerInfoNotValid;
 import com.cg.ewallet.exception.MobileNoNotValid;
@@ -38,31 +39,57 @@ public class AccountServiceImpl implements AccountService {
 		List<Customer> customers = custDao.findAll();
 		int flag=0;
 
-		if( EwalletValidation.checkCustomerMobile(customer.getPhoneNo()+"".toString()) &&
-				EwalletValidation.checkCustomerName(customer.getCustName()) &&
-				EwalletValidation.checkPassword(customer.getPassword()) &&
-				EwalletValidation.checkCustomerEmail(customer.getEmailId()))
+		if( EwalletValidation.checkCustomerMobile(customer.getPhoneNo()+"".toString()))
 		{
-			for(Customer cust:customers){
-				if(cust.getPhoneNo()==customer.getPhoneNo())
+			if(EwalletValidation.checkCustomerName(customer.getCustName()))
+			{
+				if(EwalletValidation.checkPassword(customer.getPassword()))
 				{
-					flag=1;
-					break;
+					if(EwalletValidation.checkCustomerEmail(customer.getEmailId()))
+					{
+						for(Customer cust:customers){
+							if(cust.getPhoneNo()==customer.getPhoneNo())
+							{
+								flag=1;
+								break;
+							}
+						}
+
+						if(flag==1)
+						{
+							throw new UserExistsException("User With this mobile number already Exist");
+						}
+						else
+						{
+							custDao.save(new Customer(customer.getPhoneNo(), customer.getPassword(), customer.getCustName(), customer.getAge(),
+									customer.getGender(), customer.getEmailId()));
+							restTemplate.postForObject("http://Transaction-Service/newUser",
+									new UserLoginDetail(customer.getPhoneNo(),customer.getPassword()) , UserLoginDetail.class);
+							return "Account Detail sucessfully submitted"; 
+						}
+					}
+					else
+					{
+						throw new CustomerInfoNotValid("Please Enter Correct EmailID");	
+					}
+				}
+				else
+				{
+					throw new CustomerInfoNotValid("Please Enter Correct Password");
 				}
 			}
 
-			if(flag==1)
-			{
-				throw new UserExistsException("User With this mobile number already Exist");
-			}
 			else
 			{
-				custDao.save(new Customer(customer.getPhoneNo(), customer.getPassword(), customer.getCustName(), customer.getAge(),
-						customer.getGender(), customer.getEmailId()));
-				return "Account Detail sucessfully submitted"; 
-			}}
+				throw new CustomerInfoNotValid("Please Enter Correct Customer Name");
+			}
+		}
+
 		else
-			throw new CustomerInfoNotValid("Please give correct data");
+		{
+			throw new CustomerInfoNotValid("Please Enter Correct PhoneNumber");
+		}
+
 	}
 
 
@@ -154,8 +181,9 @@ public class AccountServiceImpl implements AccountService {
 				else
 				{
 					acc.setAccountStatus("rejected");
+					custDao.saveAndFlush(acc);
 					flag=2;
-				}
+				}  
 				break;
 			}
 		}
@@ -181,34 +209,56 @@ public class AccountServiceImpl implements AccountService {
 		int flag=0;
 		List<Customer> allCustList = custDao.findAll();
 
-		if( EwalletValidation.checkCustomerMobile(customer.getPhoneNo()+"".toString()) &&
-				EwalletValidation.checkCustomerName(customer.getCustName()) &&
-				EwalletValidation.checkPassword(customer.getPassword()) &&
-				EwalletValidation.checkCustomerEmail(customer.getEmailId()))
+		if( EwalletValidation.checkCustomerMobile(customer.getPhoneNo()+"".toString()))
 		{
-		for(Customer cust:allCustList) {
-			if(cust.getPhoneNo()==customer.getPhoneNo()) {
-				flag=1;
-				break;
-			}}
+			if(EwalletValidation.checkCustomerName(customer.getCustName()))
+			{
+				if(EwalletValidation.checkPassword(customer.getPassword()))
+				{
+					if(EwalletValidation.checkCustomerEmail(customer.getEmailId()))
+					{
+						for(Customer cust:allCustList) {
+							if(cust.getPhoneNo()==customer.getPhoneNo()) {
+								flag=1;
+								break;
+							}}
 
-		if(flag==0)
-		{
-			return "User with Detail "+customer.getPhoneNo()+" Not Found";
+						if(flag==0)
+						{
+							return "User with Detail "+customer.getPhoneNo()+" Not Found";
+						}
+						else
+						{
+							custDao.saveAndFlush(new Customer(customer.getPhoneNo(), customer.getPassword(), customer.getCustName(), customer.getAge(),
+									customer.getGender(), customer.getEmailId()));
+							return "Personal detail sucessfully updated for "+customer.getCustName();
+						}
+					}
+						else
+						{
+							throw new CustomerInfoNotValid("Please Enter Correct EmailID");	
+						}
+					}
+					else
+					{
+						throw new CustomerInfoNotValid("Please Enter Correct Password");
+					}
+				}
+
+				else
+				{
+					throw new CustomerInfoNotValid("Please Enter Correct Customer Name");
+				}
+			}
+
+			else
+			{
+				throw new CustomerInfoNotValid("Please Enter Correct PhoneNumber");
+			}
+
+
 		}
-		else
-		{
-			custDao.saveAndFlush(new Customer(customer.getPhoneNo(), customer.getPassword(), customer.getCustName(), customer.getAge(),
-					customer.getGender(), customer.getEmailId()));
-			return "Personal detail sucessfully updated for "+customer.getCustName();
-		}
-		}
-		else
-			throw new CustomerInfoNotValid("Please give correct data");
-			
+
+
 
 	}
-
-
-
-}

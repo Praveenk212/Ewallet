@@ -6,7 +6,7 @@ public class CustomerDTO {
 	
 	private long phoneNo;
 	
-	private String password;
+	private String passWord;
 
 	private String custName;
 
@@ -28,7 +28,7 @@ public class CustomerDTO {
 	public CustomerDTO(long phoneNo, String password, String custName, int age, String gender, String emailId) {
 		super();
 		this.phoneNo = phoneNo;
-		this.password = password;
+		this.passWord = password;
 		this.custName = custName;
 		this.age = age;
 		this.gender = gender;
@@ -38,7 +38,7 @@ public class CustomerDTO {
 	public CustomerDTO(long phoneNo, String password, String custName, int age, String gender, String emailId,String status) {
 		super();
 		this.phoneNo = phoneNo;
-		this.password = password;
+		this.passWord = password;
 		this.custName = custName;
 		this.age = age;
 		this.gender = gender;
@@ -61,12 +61,12 @@ public class CustomerDTO {
 	}
 	
 	public String getPassword() {
-		return password;
+		return passWord;
 	}
 
 	
 	public void setPassword(String password) {
-		this.password = password;
+		this.passWord = password;
 	}
 
 	public String getCustName() {
@@ -124,7 +124,7 @@ public class CustomerDTO {
 	
 	@Override
 	public String toString() {
-		return "Customer [phoneNo=" + phoneNo + ", password=" + password + ", custName=" + custName + ", age=" + age
+		return "Customer [phoneNo=" + phoneNo + ", password=" + passWord + ", custName=" + custName + ", age=" + age
 				+ ", gender=" + gender + ", emailId=" + emailId + ", accountStatus=" + accountStatus + "]";
 	}
 
