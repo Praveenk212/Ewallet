@@ -25,20 +25,20 @@ public class CustomerDTO {
 	public CustomerDTO(){}
 	
 	
-	public CustomerDTO(long phoneNo, String password, String custName, int age, String gender, String emailId) {
+	public CustomerDTO(long phoneNo, String passWord, String custName, int age, String gender, String emailId) {
 		super();
 		this.phoneNo = phoneNo;
-		this.passWord = password;
+		this.passWord = passWord;
 		this.custName = custName;
 		this.age = age;
 		this.gender = gender;
 		this.emailId = emailId;
 		this.accountStatus = "pending";
 	}
-	public CustomerDTO(long phoneNo, String password, String custName, int age, String gender, String emailId,String status) {
+	public CustomerDTO(long phoneNo, String passWord, String custName, int age, String gender, String emailId,String status) {
 		super();
 		this.phoneNo = phoneNo;
-		this.passWord = password;
+		this.passWord = passWord;
 		this.custName = custName;
 		this.age = age;
 		this.gender = gender;
@@ -59,15 +59,17 @@ public class CustomerDTO {
 	public void setAccountStatus(String accountStatus) {
 		this.accountStatus = accountStatus;
 	}
-	
-	public String getPassword() {
+
+
+	public String getPassWord() {
 		return passWord;
 	}
 
-	
-	public void setPassword(String password) {
-		this.passWord = password;
+
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
 	}
+
 
 	public String getCustName() {
 		return custName;
@@ -124,7 +126,7 @@ public class CustomerDTO {
 	
 	@Override
 	public String toString() {
-		return "Customer [phoneNo=" + phoneNo + ", password=" + passWord + ", custName=" + custName + ", age=" + age
+		return "Customer [phoneNo=" + phoneNo + ", passWord=" + passWord + ", custName=" + custName + ", age=" + age
 				+ ", gender=" + gender + ", emailId=" + emailId + ", accountStatus=" + accountStatus + "]";
 	}
 

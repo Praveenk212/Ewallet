@@ -43,7 +43,7 @@ public class AccountServiceImpl implements AccountService {
 		{
 			if(EwalletValidation.checkCustomerName(customer.getCustName()))
 			{
-				if(EwalletValidation.checkPassword(customer.getPassword()))
+				if(EwalletValidation.checkPassword(customer.getPassWord()))
 				{
 					if(EwalletValidation.checkCustomerEmail(customer.getEmailId()))
 					{
@@ -61,10 +61,10 @@ public class AccountServiceImpl implements AccountService {
 						}
 						else
 						{
-							custDao.save(new Customer(customer.getPhoneNo(), customer.getPassword(), customer.getCustName(), customer.getAge(),
+							custDao.save(new Customer(customer.getPhoneNo(), customer.getPassWord(), customer.getCustName(), customer.getAge(),
 									customer.getGender(), customer.getEmailId()));
-							restTemplate.postForObject("http://Transaction-Service/newUser",
-									new UserLoginDetail(customer.getPhoneNo(),customer.getPassword()) , UserLoginDetail.class);
+							restTemplate.postForObject("http://AuthenticateUser/newUser",
+									new UserLoginDetail(customer.getPhoneNo(),customer.getPassWord()) , UserLoginDetail.class);
 							return "Account Detail sucessfully submitted"; 
 						}
 					}
@@ -213,7 +213,7 @@ public class AccountServiceImpl implements AccountService {
 		{
 			if(EwalletValidation.checkCustomerName(customer.getCustName()))
 			{
-				if(EwalletValidation.checkPassword(customer.getPassword()))
+				if(EwalletValidation.checkPassword(customer.getPassWord()))
 				{
 					if(EwalletValidation.checkCustomerEmail(customer.getEmailId()))
 					{
@@ -229,8 +229,8 @@ public class AccountServiceImpl implements AccountService {
 						}
 						else
 						{
-							custDao.saveAndFlush(new Customer(customer.getPhoneNo(), customer.getPassword(), customer.getCustName(), customer.getAge(),
-									customer.getGender(), customer.getEmailId()));
+							custDao.saveAndFlush(new Customer(customer.getPhoneNo(), customer.getPassWord(), customer.getCustName(), customer.getAge(),
+									customer.getGender(), customer.getEmailId(),customer.getAccountStatus()));
 							return "Personal detail sucessfully updated for "+customer.getCustName();
 						}
 					}

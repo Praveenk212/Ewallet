@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.ewallet.dto.CustomerDTO;
+import com.cg.ewallet.dto.Message;
 import com.cg.ewallet.entity.Customer;
 import com.cg.ewallet.exception.CustomerInfoNotValid;
 import com.cg.ewallet.exception.MobileNoNotValid;
@@ -49,7 +50,7 @@ public class Controller {
 
 	//For Creating a new user account by getting Customer dto object
 	@PostMapping(value="/newcustomer")
-	public ResponseEntity<String> createCustomerAccount(@RequestBody CustomerDTO customer)
+	public ResponseEntity<Message> createCustomerAccount(@RequestBody CustomerDTO customer)
 	{
 		String accountCreationMessage="";
 		try
@@ -57,14 +58,14 @@ public class Controller {
 		    accountCreationMessage= accService.createCustomerAccount(customer);
 		}catch(Exception ex) {
 			//Throw an exception when user with mobilenumber already exist on db
-			return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new Message(ex.getMessage()),HttpStatus.BAD_REQUEST);
 		}
 		log.info("Creating New Account");
 		if(HttpStatus.BAD_REQUEST==null)
 		{
 			log.warn("Not a Proper Request");	
 		}
-		return new ResponseEntity<>(accountCreationMessage,HttpStatus.OK);
+		return new ResponseEntity<>(new Message(accountCreationMessage),HttpStatus.OK);
 	}
 	
 	

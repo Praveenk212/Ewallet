@@ -11,7 +11,7 @@ public class EwalletValidation
 
 		String regex="((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
 		return password.matches(regex);
-	}
+	} 
 	
 	public static boolean checkCustomerName(String name)
 	{
