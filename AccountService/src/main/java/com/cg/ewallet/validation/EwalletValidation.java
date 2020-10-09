@@ -22,7 +22,7 @@ public class EwalletValidation
 	
 	public static boolean checkCustomerMobile(String moblieNo)
 	{
-		String regex="(0/91)?[7-9][0-9]{9}";
+		String regex="(0/91)?[6-9][0-9]{9}";
 		return moblieNo.matches(regex);
 	}
 

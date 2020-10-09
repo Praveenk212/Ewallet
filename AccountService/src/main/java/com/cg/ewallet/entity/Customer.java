@@ -35,10 +35,10 @@ public class Customer {
 	public Customer(){}
 	
 	
-	public Customer(long phoneNo, String password, String custName, int age, String gender, String emailId) {
+	public Customer(long phoneNo, String passWord, String custName, int age, String gender, String emailId) {
 		super();
 		this.phoneNo = phoneNo;
-		this.passWord = password;
+		this.passWord = passWord;
 		this.custName = custName;
 		this.age = age;
 		this.gender = gender;
@@ -46,10 +46,10 @@ public class Customer {
 		this.accountStatus = "pending";
 	}
 	
-	public Customer(long phoneNo, String password, String custName, int age, String gender, String emailId,String status) {
+	public Customer(long phoneNo, String passWord, String custName, int age, String gender, String emailId,String status) {
 		super();
 		this.phoneNo = phoneNo;
-		this.passWord = password;
+		this.passWord = passWord;
 		this.custName = custName;
 		this.age = age;
 		this.gender = gender;
@@ -73,15 +73,17 @@ public class Customer {
 	
 
 
-	public String getPassword() {
+	
+
+	public String getPassWord() {
 		return passWord;
 	}
 
-	
 
-	public void setPassword(String password) {
-		this.passWord = password;
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
 	}
+
 
 	public String getCustName() {
 		return custName;

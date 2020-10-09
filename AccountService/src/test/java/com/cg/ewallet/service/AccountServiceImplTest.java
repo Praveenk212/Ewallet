@@ -41,7 +41,7 @@ public class AccountServiceImplTest {
 		Customer custOne = new Customer(7876543212l, "John@123", "John", 19,"Male","howtodoinjava@gmail.com");
 		when(custDao.save(custOne)).thenReturn(custOne);
 	    assertEquals("Account Detail sucessfully submitted", accService.createCustomerAccount(
-	    		new CustomerDTO(custOne.getPhoneNo(), custOne.getPassword(), custOne.getCustName(), custOne.getAge(),
+	    		new CustomerDTO(custOne.getPhoneNo(), custOne.getPassWord(), custOne.getCustName(), custOne.getAge(),
 	    				custOne.getGender(), custOne.getEmailId())));
 	}
 	
@@ -54,7 +54,7 @@ public class AccountServiceImplTest {
 	    assertEquals(assertThrows(
 				CustomerInfoNotValid.class,()
 				 ->  accService.createCustomerAccount(
-				    		new CustomerDTO(custOne.getPhoneNo(), custOne.getPassword(), custOne.getCustName(), custOne.getAge(),
+				    		new CustomerDTO(custOne.getPhoneNo(), custOne.getPassWord(), custOne.getCustName(), custOne.getAge(),
 				    				custOne.getGender(), custOne.getEmailId()))).getMessage(),"Please give correct data");
 	}
 	
@@ -67,7 +67,7 @@ public class AccountServiceImplTest {
 	    assertEquals(assertThrows(
 				CustomerInfoNotValid.class,()
 				 ->  accService.createCustomerAccount(
-				    		new CustomerDTO(custOne.getPhoneNo(), custOne.getPassword(), custOne.getCustName(), custOne.getAge(),
+				    		new CustomerDTO(custOne.getPhoneNo(), custOne.getPassWord(), custOne.getCustName(), custOne.getAge(),
 				    				custOne.getGender(), custOne.getEmailId()))).getMessage(),"Please give correct data");
 	}
 	
@@ -81,7 +81,7 @@ public class AccountServiceImplTest {
 	    assertEquals(assertThrows(
 				CustomerInfoNotValid.class,()
 				 ->  accService.createCustomerAccount(
-				    		new CustomerDTO(custOne.getPhoneNo(), custOne.getPassword(), custOne.getCustName(), custOne.getAge(),
+				    		new CustomerDTO(custOne.getPhoneNo(), custOne.getPassWord(), custOne.getCustName(), custOne.getAge(),
 				    				custOne.getGender(), custOne.getEmailId()))).getMessage(),"Please give correct data");
 	}
 	
@@ -95,7 +95,7 @@ public class AccountServiceImplTest {
 	    assertEquals(assertThrows(
 				CustomerInfoNotValid.class,()
 				 ->  accService.createCustomerAccount(
-				    		new CustomerDTO(custOne.getPhoneNo(), custOne.getPassword(), custOne.getCustName(), custOne.getAge(),
+				    		new CustomerDTO(custOne.getPhoneNo(), custOne.getPassWord(), custOne.getCustName(), custOne.getAge(),
 				    				custOne.getGender(), custOne.getEmailId()))).getMessage(),"Please give correct data");
 	}
 	
